@@ -1,0 +1,17 @@
+C:\Users\pc\Desktop\cg-plugins\CAC\bin\Debug\netstandard2.1\CAC.deps.json
+C:\Users\pc\Desktop\cg-plugins\CAC\bin\Debug\netstandard2.1\CAC.dll
+C:\Users\pc\Desktop\cg-plugins\CAC\bin\Debug\netstandard2.1\CAC.pdb
+C:\Users\pc\Desktop\cg-plugins\CAC\bin\Debug\netstandard2.1\Assembly-CSharp-firstpass.dll
+C:\Users\pc\Desktop\cg-plugins\CAC\bin\Debug\netstandard2.1\Il2Cppmscorlib.dll
+C:\Users\pc\Desktop\cg-plugins\CAC\bin\Debug\netstandard2.1\Unity.TextMeshPro.dll
+C:\Users\pc\Desktop\cg-plugins\CAC\bin\Debug\netstandard2.1\UnityEngine.PhysicsModule.dll
+C:\Users\pc\Desktop\cg-plugins\CAC\bin\Debug\netstandard2.1\UnityEngine.UIModule.dll
+C:\Users\pc\Desktop\cg-plugins\CAC\obj\Debug\netstandard2.1\CAC.csproj.AssemblyReference.cache
+C:\Users\pc\Desktop\cg-plugins\CAC\obj\Debug\netstandard2.1\PluginInfo.cs
+C:\Users\pc\Desktop\cg-plugins\CAC\obj\Debug\netstandard2.1\CAC.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\pc\Desktop\cg-plugins\CAC\obj\Debug\netstandard2.1\CAC.AssemblyInfoInputs.cache
+C:\Users\pc\Desktop\cg-plugins\CAC\obj\Debug\netstandard2.1\CAC.AssemblyInfo.cs
+C:\Users\pc\Desktop\cg-plugins\CAC\obj\Debug\netstandard2.1\CAC.csproj.CoreCompileInputs.cache
+C:\Users\pc\Desktop\cg-plugins\CAC\obj\Debug\netstandard2.1\CAC.csproj.CopyComplete
+C:\Users\pc\Desktop\cg-plugins\CAC\obj\Debug\netstandard2.1\CAC.dll
+C:\Users\pc\Desktop\cg-plugins\CAC\obj\Debug\netstandard2.1\CAC.pdb

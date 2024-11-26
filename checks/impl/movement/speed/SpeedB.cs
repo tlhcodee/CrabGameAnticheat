@@ -30,7 +30,7 @@ namespace CAC.checks.impl.movement.speed
 
             double difference = averageSpeed - lastAverage; // diff between averages
 
-            bool invalid = difference <= 0.4; // the difference is actually low meaning the player hasnt slow down yet (constant speed?)
+            bool invalid = difference <= 0.3; // the difference is actually low meaning the player hasnt slow down yet (constant speed?)
 
             if(invalid)
             {

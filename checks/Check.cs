@@ -33,14 +33,32 @@ namespace CAC.checks
         {
             VL++;
 
-            ServerSend.SendChatMessage(1, $"[CAC] {this.player.name} failed {name} {level} ({VL})");
-
-            if(VL >= neededBanVL)
+            if(Plugin.choosenLanguage == Language.TURKISH)
             {
-                ServerSend.SendChatMessage(1, "");
-                ServerSend.SendChatMessage(1, $"[CAC] {this.player.name} is removed from the network");
-                ServerSend.SendChatMessage(1, $"[CAC] Reason: Cheating ({this.name} {this.level})");
-                ServerSend.SendChatMessage(1, "");
+                ServerSend.SendChatMessage(1, $"[CAC] {this.player.name} hile kullanıyor {name} {level} ({VL})");
+            } else
+            {
+                ServerSend.SendChatMessage(1, $"[CAC] {this.player.name} failed {name} {level} ({VL})");
+            }
+
+            if(VL >= neededBanVL && Plugin.autoBan)
+            {
+                if(Plugin.choosenLanguage == Language.TURKISH)
+                {
+                    ServerSend.SendChatMessage(1, "");
+                    ServerSend.SendChatMessage(1, $"[CAC] {this.player.name} adlı oyuncu yasaklandı");
+                    ServerSend.SendChatMessage(1, $"[CAC] Sebep: Hile Kullanımı ({this.name} {this.level})");
+                    ServerSend.SendChatMessage(1, "");
+                } else
+                {
+                    ServerSend.SendChatMessage(1, "");
+                    ServerSend.SendChatMessage(1, $"[CAC] {this.player.name} is removed from the network");
+                    ServerSend.SendChatMessage(1, $"[CAC] Reason: Cheating ({this.name} {this.level})");
+                    ServerSend.SendChatMessage(1, "");
+                }
+
+                LobbyManager.Instance.BanPlayer(thePlayer.getSteamID());
+
                 reset();
             }
         }

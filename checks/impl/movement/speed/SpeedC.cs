@@ -7,7 +7,7 @@ using System.Text;
 
 namespace CAC.checks.impl.movement.speed
 {
-    public class SpeedC() : Check("Speed", CheckLevel.C, "Checks for too much of difference in deltaX and deltaZ", 2, 2)
+    public class SpeedC() : Check("Speed", CheckLevel.C, "Checks for too much of difference in deltaX and deltaZ", 2, 1)
     {
         public override void handleMovementUpdate(EventMovement e)
         {
@@ -29,7 +29,7 @@ namespace CAC.checks.impl.movement.speed
 
             // DISTANCE IS BIGGER THAN 5, seems like our guy is not legit
             // :D
-            bool invalid = Plugin.currentMap.Equals("Mini Monke") ? distance > 25 : distance > 5; // TELEPORT HACKS???
+            bool invalid = Plugin.currentMap.Equals("Mini Monke") ? distance > 15 : distance > 4.5; // TELEPORT HACKS???
 
             if(invalid)
             {

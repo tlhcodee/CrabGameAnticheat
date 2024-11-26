@@ -25,6 +25,9 @@ namespace CAC
 
         public static bool isStarted;
 
+        public static Language choosenLanguage = Language.ENGLISH;
+        public static bool autoBan = true;
+
         public override void Load()
         {
             Harmony.CreateAndPatchAll(typeof(Plugin));
@@ -52,6 +55,24 @@ namespace CAC
         internal static void OnFreezeOver()
         {
             isStarted = true;
+        }
+
+        [HarmonyPatch(typeof(ServerHandle), nameof(ServerHandle.PlayerRotation))]
+        [HarmonyPostfix]
+        internal static void ServerHandlePlayerRotation(ulong param_0, Packet param_1)
+        {
+            ulong playerSteam = param_0;
+            string name = Utils.getNameByUlong(playerSteam);
+
+            Player player = Utils.getPlayerDataByName(name);
+
+            float yaw = BitConverter.ToSingle(param_1.field_Private_ArrayOf_Byte_0, 8);
+            float pitch = BitConverter.ToSingle(param_1.field_Private_ArrayOf_Byte_0, 12);
+
+            if(player != null)
+            {
+                player.rotationTracker.handleRotationTick(yaw, pitch);
+            }
         }
 
 
@@ -92,12 +113,76 @@ namespace CAC
                 bool horizontalChange = x != player.positionTracker.x || z != player.positionTracker.z;
                 bool verticalChange = y != player.positionTracker.y;
 
-                player.positionTracker.handleTickUpdate(player, x, y, z, grounded);
+                player.positionTracker.handleTickUpdate(x, y, z, grounded);
 
                 EventMovement moveEvent = new EventMovement(x, y, z, yaw, pitch, grounded, isPosChanged, horizontalChange, verticalChange);
 
                 player.eventHandler.PostEvent(moveEvent);
             }
+        }
+
+
+        [HarmonyPatch(typeof(ServerSend), nameof(ServerSend.SendChatMessage))]
+        [HarmonyPrefix]
+        public static bool ServerSendSendChatMessagePre(ulong param_0, string param_1)
+        {
+            if (!IsHost()) return true;
+            string msg = param_1.ToLower();
+            if (param_0 == GetMyID() && msg.StartsWith("!"))
+            {
+                switch (msg)
+                {
+                    case "!autoban":
+                        autoBan = !autoBan;
+                        String current = autoBan ? choosenLanguage == Language.TURKISH ? "Anti hile otomatik banlarý açýldý" : "Anticheat automated bans are toggled on" :
+                            choosenLanguage == Language.TURKISH ? "Anti hile otomatik banlarý kapatýldý" : "Anticheat automated bans are toggled off";
+
+                        ChatBox.Instance.AppendMessage(1, current, "");
+                        break;
+                    case "!language":
+                        if(choosenLanguage == Language.TURKISH)
+                        {
+                            ChatBox.Instance.AppendMessage(1, "Language is set to English.", "");
+                            choosenLanguage = Language.ENGLISH;
+                        } else if(choosenLanguage == Language.ENGLISH)
+                        {
+                            ChatBox.Instance.AppendMessage(1, "Dil türkçe olarak ayarlandý.", "");
+                            choosenLanguage = Language.TURKISH;
+                        }
+                        break;
+                    default:
+                        if(choosenLanguage == Language.TURKISH)
+                        {
+                            ChatBox.Instance.AppendMessage(1, "Bilinmeyen komut. komut listemize göz atmak isteyebilirsin.", "");
+                            ChatBox.Instance.AppendMessage(1, "!langauge - ingilizce ve türkçe arasýnda geçiþ", "");
+                            ChatBox.Instance.AppendMessage(1, "!autoban - otomatik banlama aç kapat", "");
+                        } else
+                        {
+                            ChatBox.Instance.AppendMessage(1, "Unknown command. you may want to check out command list", "");
+                            ChatBox.Instance.AppendMessage(1, "!langauge - switch langauge between turkish and english", "");
+                            ChatBox.Instance.AppendMessage(1, "!autoban - toggle on/off anticheat automated bans", "");
+                        }
+                        break;
+                }
+                return false;
+            }
+            else return true;
+        }
+
+
+        public static ulong GetMyID()
+        {
+            return SteamManager.Instance.field_Private_CSteamID_0.m_SteamID;
+        }
+
+        public static ulong GetHostID()
+        {
+            return SteamManager.Instance.field_Private_CSteamID_1.m_SteamID;
+        }
+
+        public static bool IsHost()
+        {
+            return SteamManager.Instance.IsLobbyOwner() && !LobbyManager.Instance.Method_Public_Boolean_0();
         }
 
 

@@ -10,13 +10,16 @@ namespace CAC.checks.events.impl
         public Vector3 from, to;
         public double distance;
         public bool rayHit;
+
+        public String[] names;
         
-        public EventCombat(Vector3 from, Vector3 to, double distance, bool isRayHit)
+        public EventCombat(Vector3 from, Vector3 to, double distance, bool isRayHit, String[] names)
         {
             this.from = from;
             this.to = to;
             this.distance = distance;
             this.rayHit = isRayHit;
+            this.names = names;
         }
     }
 }

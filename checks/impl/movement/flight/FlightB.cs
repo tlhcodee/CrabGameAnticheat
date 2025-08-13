@@ -3,32 +3,42 @@ using CAC.data.trackers;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
 namespace CAC.checks.impl.movement.flight
 {
-    public class FlightB() : Check("Flight", CheckLevel.B, "Checks for invalid fall motion", 10, 10)
+    public class FlightB() : Check("Flight", CheckLevel.B, "Checks for gliding y position", 5, 5)
     {
 
+        private int updates = 0;
+        
         public override void handleMovementUpdate(EventMovement e)
         {
-            PositionTracker positionTracker = this.player.positionTracker;
+            PositionTracker pos = this.player.positionTracker;
 
-            if (!e.isPosVerticallyChanged) return;
-            if (positionTracker.grounded || this.player.isCollidingHorizontally) return;
+            bool exempt = pos.deltaY > 1 || pos.grounded || pos.deltaY == 0.0;
 
-            double deltaY = Math.Abs(positionTracker.motionY - positionTracker.lastMotionY); // Check the delta
+            if (true) return;
 
-            if(deltaY <= 0.001 && positionTracker.airTick > 10) // delta Y is so low meaning the player enabled noclip or something
+            // CHECK EVERY 10 TICKS
+            if (updates % 10 == 0)
             {
-                if(this.Buffer.increase() > this.NeededBuffer) // BUFFER BUFFER BUFFER $$
+                double lastDeltaY = pos.lastMotionY;
+
+                if(pos.deltaY - lastDeltaY < 0.4)
                 {
-                    this.fail();
+                    if(this.Buffer.increase() > this.NeededBuffer)
+                    {
+                        this.fail();
+                    }
                 }
-            } else
-            {
-                this.Buffer.decrease();
+                else
+                {
+                    this.Buffer.decrease();
+                }
             }
 
+            updates++;
             base.handleMovementUpdate(e);
         }
     }

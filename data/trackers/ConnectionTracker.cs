@@ -13,12 +13,14 @@ namespace CAC.data.trackers
 
         public double ping;
 
-        public long averageDelay, lastDelay, lastAverage;
+        public long averageDelay, lastAverage;
+
+        public DateTime lastDelay;
 
         public ConnectionTracker()
         {
             this.ping = 0;
-            this.lastDelay = 0;
+            this.lastDelay = DateTime.Now;
             this.averageDelay = 0;
         }
 
@@ -32,7 +34,7 @@ namespace CAC.data.trackers
 
             if (data == null) return;
 
-            updates.Add(DateTime.Now.Millisecond - lastDelay);
+            updates.Add(DateTime.Now.Millisecond - lastDelay.Millisecond);
 
             if (updates.Count >= 6)
             {
@@ -50,7 +52,7 @@ namespace CAC.data.trackers
                 lastAverage = average;
             }
 
-            lastDelay = DateTime.Now.Millisecond;
+            lastDelay = DateTime.Now;
         }
     }
 }

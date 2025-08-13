@@ -1,4 +1,5 @@
 ﻿using CAC.checks.impl.combat.interact;
+using CAC.checks.impl.exploit.fakelag;
 using CAC.checks.impl.movement.flight;
 using CAC.checks.impl.movement.invalid;
 using CAC.checks.impl.movement.speed;
@@ -30,16 +31,19 @@ namespace CAC.checks
         {
             // COMBAT CHECKS
             checks.Add(new InteractA());
-            checks.Add(new InteractB());
 
             // MOVEMENT CHECKS
             checks.Add(new FlightA());
             checks.Add(new FlightB());
-            checks.Add(new FlightC());
+
             checks.Add(new SpeedA());
             checks.Add(new SpeedB());
             checks.Add(new SpeedC());
-            checks.Add(new InvalidMoveA());
+            checks.Add(new SpeedD());
+            checks.Add(new SpeedE());
+
+            checks.Add(new FakeLagA());
+            checks.Add(new FakeLagB());
         }
 
         public List<Check> getMovementChecks()

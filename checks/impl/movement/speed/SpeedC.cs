@@ -29,7 +29,7 @@ namespace CAC.checks.impl.movement.speed
 
             // DISTANCE IS BIGGER THAN 5, seems like our guy is not legit
             // :D
-            bool invalid = Plugin.currentMap.Equals("Mini Monke") ? distance > 15 : distance > 4.5; // TELEPORT HACKS???
+            bool invalid = Plugin.currentMap.Equals("Mini Monke") ? distance > 15 : distance > 8.5; // TELEPORT HACKS???
 
             if(invalid)
             {

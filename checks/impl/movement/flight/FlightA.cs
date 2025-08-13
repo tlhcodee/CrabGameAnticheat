@@ -2,38 +2,71 @@
 using CAC.data.trackers;
 using System;
 using System.Collections.Generic;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using UnityEngine;
 
 namespace CAC.checks.impl.movement.flight
 {
-    public class FlightA() : Check("Flight", CheckLevel.A, "Player always goes up ? LOL", 10, 20)
+    public class FlightA() : Check("Flight", CheckLevel.A, "Experimental prediction check", 5, 5)
     {
 
-        private double noFallAirTicks;
+        private bool disabled;
 
         public override void handleMovementUpdate(EventMovement e)
         {
-            PositionTracker positionTracker = this.player.positionTracker;
+            PositionTracker tracker = this.player.positionTracker;
 
-            bool shouldExit = !e.isPosVerticallyChanged || positionTracker.grounded || player.isCollidingHorizontally;
+            bool exempt = player.sinceCollideTicks < 20 || tracker.grounded;
 
-            if (shouldExit)
+            if(exempt)
             {
-                this.Buffer.setBuffer(0); // TO NOT FALSE LEGITS ON LADDERS
-                // YES... it falses legits whenever doing a legit hyperglide into a ladder
+                this.Buffer.setBuffer(0);
                 return;
             }
 
-            bool isUpwardsMotion = positionTracker.y > positionTracker.lastY; // is the player going upwards and not falling down?
+            double deltaY = Math.Abs(tracker.y - tracker.lastY);
 
-            if (isUpwardsMotion && positionTracker.airTick > 10) // there must be a case that the player is cheating, since he hasnt fell down since 10 air tick
+            double velocityY = deltaY;
+
+            double predictedVelocity = velocityY + (10 * Time.deltaTime);
+
+            double predictedY = tracker.y + (predictedVelocity * Time.deltaTime);
+
+            double diff = Math.Abs(tracker.y - predictedY);
+
+            float tolerance = 0.05f;
+            bool upwards = tracker.y > tracker.lastY;
+            int ticks = tracker.airTick;
+
+            if (velocityY > 1.5 && upwards)
             {
-                if(this.Buffer.increase() > this.NeededBuffer) // still need buffer to not false
+                if(ticks > 11)
+                {
+                    if(this.Buffer.increase() > 5)
+                    {
+                        this.fail("tick: " + ticks + " velocity: " + velocityY);
+                    }
+                }
+                return;                
+            } else if(ticks > 11 && !upwards)
+            {
+                disabled = true;
+            } else if(tracker.grounded)
+            {
+                disabled = false;
+            }
+
+            if(disabled) return;
+
+            if (diff > tolerance)
+            {
+                if (this.Buffer.increase() > 5)
                 {
                     this.fail();
                 }
-            } else
+            }
+            else
             {
                 this.Buffer.decrease();
             }

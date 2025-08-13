@@ -16,7 +16,7 @@ namespace CAC.checks.impl.movement.speed
         {
             PositionTracker positionTracker = this.player.positionTracker;
 
-            if(!e.isPosHorizontallyChanged || positionTracker.horizontalSpeed < 1.5 || positionTracker.motionY > 0.8) // we dont care about the speeds that can be happen by legit gameplay. (hyperglide and some other techs)
+            if(!e.isPosHorizontallyChanged || positionTracker.horizontalSpeed < 1.6 || positionTracker.motionY > 0.8) // we dont care about the speeds that can be happen by legit gameplay. (hyperglide and some other techs)
             {
                 this.Buffer.setBuffer(0);
                 return;

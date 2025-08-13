@@ -57,7 +57,7 @@ namespace CAC.checks
                     ServerSend.SendChatMessage(1, "");
                 }
 
-                LobbyManager.Instance.BanPlayer(thePlayer.getSteamID());
+                //LobbyManager.Instance.BanPlayer(thePlayer.getSteamID());
 
                 reset();
             }

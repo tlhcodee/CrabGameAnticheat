@@ -7,38 +7,26 @@ using UnityEngine;
 
 namespace CAC.checks.impl.movement.flight
 {
-    public class FlightB() : Check("Flight", CheckLevel.B, "Checks for gliding y position", 5, 5)
+    public class FlightB() : Check("Flight", CheckLevel.B, "Checks for invalid jump height", 5, 5)
     {
 
-        private int updates = 0;
-        
         public override void handleMovementUpdate(EventMovement e)
         {
             PositionTracker pos = this.player.positionTracker;
 
-            bool exempt = pos.deltaY > 1 || pos.grounded || pos.deltaY == 0.0;
+            int airTicks = pos.airTick;
+            double deltaY = pos.y - pos.lastY;
 
-            if (true) return;
-
-            // CHECK EVERY 10 TICKS
-            if (updates % 10 == 0)
+            if(airTicks > 0 && airTicks <= 3)
             {
-                double lastDeltaY = pos.lastMotionY;
+                bool invalid = deltaY > 0.4;
 
-                if(pos.deltaY - lastDeltaY < 0.4)
+                if(invalid)
                 {
-                    if(this.Buffer.increase() > this.NeededBuffer)
-                    {
-                        this.fail();
-                    }
-                }
-                else
-                {
-                    this.Buffer.decrease();
+                    this.fail("deltaY: " + deltaY + " ticks: " + airTicks);
                 }
             }
 
-            updates++;
             base.handleMovementUpdate(e);
         }
     }

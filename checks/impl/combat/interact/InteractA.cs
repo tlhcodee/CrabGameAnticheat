@@ -149,6 +149,11 @@ namespace CAC.checks.impl.combat.interact
                     {
                         mitigate = true;
                         this.fail();
+
+                        if (this.VL >= this.neededBanVL)
+                        {
+                            this.execution();
+                        }
                     }
                 } else
                 {

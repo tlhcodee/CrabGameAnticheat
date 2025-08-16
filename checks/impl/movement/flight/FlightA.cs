@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace CAC.checks.impl.movement.flight
 {
-    public class FlightA() : Check("Flight", CheckLevel.A, "Experimental prediction check", 5, 5)
+    public class FlightA() : Check("Flight", CheckLevel.A, "Experimental prediction check", 25, 5)
     {
 
         private bool disabled;
@@ -41,18 +41,11 @@ namespace CAC.checks.impl.movement.flight
 
             if (velocityY > 1.5 && upwards)
             {
-                if(ticks > 11)
-                {
-                    if(this.Buffer.increase() > 5)
-                    {
-                        this.fail("tick: " + ticks + " velocity: " + velocityY);
-                    }
-                }
                 return;                
             } else if(ticks > 11 && !upwards)
             {
                 disabled = true;
-            } else if(tracker.grounded)
+            } else if(tracker.grounded || tracker.airTick <= 2)
             {
                 disabled = false;
             }
@@ -64,6 +57,11 @@ namespace CAC.checks.impl.movement.flight
                 if (this.Buffer.increase() > 5)
                 {
                     this.fail();
+
+                    if(this.VL >= this.neededBanVL)
+                    {
+                        this.execution();
+                    }
                 }
             }
             else

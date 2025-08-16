@@ -1,4 +1,5 @@
 ﻿using CAC.checks.impl.combat.interact;
+using CAC.checks.impl.exploit.badpackets;
 using CAC.checks.impl.exploit.fakelag;
 using CAC.checks.impl.movement.flight;
 using CAC.checks.impl.movement.invalid;
@@ -44,6 +45,7 @@ namespace CAC.checks
 
             checks.Add(new FakeLagA());
             checks.Add(new FakeLagB());
+            checks.Add(new BadPacketsA());
         }
 
         public List<Check> getMovementChecks()

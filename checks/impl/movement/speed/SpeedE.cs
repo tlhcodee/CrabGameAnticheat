@@ -36,7 +36,6 @@ namespace CAC.checks.impl.movement.speed
                 if(should)
                 {
                     times++;
-                    ServerSend.SendChatMessage(1, "times: " + times);
                     should = false;
                 }
             }
@@ -48,6 +47,11 @@ namespace CAC.checks.impl.movement.speed
             if(speed > 2.5 && times >= 8)
             {
                 this.fail("times: " + times + " speed: " + speed);
+
+                if(this.VL >= this.neededBanVL)
+                {
+                    this.execution();
+                }
             }
 
             base.handleMovementUpdate(e);
